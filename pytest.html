@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+  </head>
+  <body>
+    <py-config>
+      import = ["asyncio"]
+    </py-config>
+    <py-script> 
+      import os
+      # from time import sleep
+      import asyncio
+      
+      from collections import deque
+      
+      def solution(bridge_length, weight, truck_weights):
+          os.system('clear')
+          answer = 0
+          bridge = deque([0] * bridge_length)
+          trucks = deque(truck_weights)
+          while trucks:
+              answer += 1
+              asyncio.ensure_future(view(bridge_length, bridge))
+              bridge.popleft()
+              if sum(bridge) + trucks[0] <= weight:
+                  bridge.append(trucks.popleft())
+              else:
+                  bridge.append(0)
+          while bridge:
+              answer += 1
+              asyncio.ensure_future(view(bridge_length, bridge))
+              bridge.popleft()
+          return answer
+      
+      async def view(bridge_length,bridge):
+          
+          trucks_on_the_bridge ='[ '+' ] [ '.join([str(x) if x else ' ' for x in list(bridge)+[0]*(bridge_length-len(bridge))]) + ' ] '
+          objects = '⇮🢕🢕 ⇮ ⇮ 🠹  '+trucks_on_the_bridge+'  🢙 🢕🢕 🠱🠭  '
+          bridge_ = '◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎ '+'◼︎◼︎◼︎◼︎◼︎ '*bridge_length+'◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎'
+          land = '◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎ '+' '*bridge_length*6+'◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎'
+          output = '\n'.join(['']*3+[objects, bridge_] + [land]*3 + [''])
+          print(output)
+          await asyncio.sleep(1)
+          os.system('clear')
+    </py-script> 
+  </body>
+</html>
